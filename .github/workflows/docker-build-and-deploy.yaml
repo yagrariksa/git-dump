@@ -33,4 +33,4 @@ jobs:
         docker-compose build
         docker-compose push
         docker tag yagrariksa/dump-git:latest yagrariksa/dump-git:$APP_VERSION
-        docker tag yagrariksa/dump-git:latest yagrariksa/dump-git:$APP_VERSION
+        docker push yagrariksa/dump-git:$APP_VERSION
