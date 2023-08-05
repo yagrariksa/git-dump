@@ -34,3 +34,21 @@ jobs:
         docker-compose push
         docker tag yagrariksa/dump-git:latest yagrariksa/dump-git:$APP_VERSION
         docker push yagrariksa/dump-git:$APP_VERSION
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH into VPS and deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            git clone https://github.com/your-username/your-repo.git ~/dump-git
+            cd ~/dump-git
+            docker-compose pull web
+            docker-compose up -d
